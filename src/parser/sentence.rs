@@ -129,6 +129,8 @@ impl PartialEq<&[Part]> for SearcherPattern {
 #[logos(skip r"[, ]")]
 #[logos(skip "\n")]
 enum SentenceLexer {
+    #[regex(r"\.[A-Z][A-Z\d]{2,}")]
+    FileExt,
     #[regex(r#"[^, "“”\(\)\.\n]+"#)]
     Word,
     #[token(".")]
@@ -418,6 +420,10 @@ pub(crate) fn parse_node(elem: NodeRef<Node>) -> Result<Vec<Sentence>, ParseErro
                     };
 
                     match token {
+                        SentenceLexer::FileExt => {
+                            let part = Part::new(lexeme.to_string());
+                            parts.push(part);
+                        }
                         SentenceLexer::Word if !paren => {
                             let part = Part::new(lexeme.to_string());
                             parts.push(part);
