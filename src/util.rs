@@ -6,7 +6,7 @@ pub trait StrExt {
     fn is_first_letter_lowercase(self) -> bool;
 }
 
-impl<'a> StrExt for &'a str {
+impl StrExt for &str {
     fn is_first_letter_lowercase(self) -> bool {
         self.chars().next().map(|c| c.is_lowercase()).unwrap()
     }
